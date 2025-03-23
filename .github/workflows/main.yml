@@ -1,0 +1,25 @@
+name: DingTalk Reminder
+
+on:
+  schedule:
+    - cron: '10 10 * * *'  # 每天北京时间 18:10（GitHub 使用 UTC 需要 -8小时）
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Reminder to DingTalk
+        run: |
+          curl -X POST "https://oapi.dingtalk.com/robot/send?access_token=073ca7ec3d560220645d41db54de6817f6a99589a426b7600e593c88cba00f8f"\
+          -H "Content-Type: application/json" \
+          -d '{
+                "msgtype": "text",
+                "text": {
+                  "content": "📢 **提醒** @某人：请记得按时吃药 💊，保持健康！"
+                },
+                "at": {
+                  "atMobiles": ["18324738630"], 
+                  "isAtAll": false
+                }
+              }'
